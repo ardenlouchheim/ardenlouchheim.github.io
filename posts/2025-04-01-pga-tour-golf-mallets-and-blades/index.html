@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arden Louchheim">
-<meta name="dcterms.date" content="2025-04-01">
+<meta name="dcterms.date" content="2025-04-14">
 
 <title>Is one putter type superior? The Mallets vs.&nbsp;Blades Debate. – Arden Louchheim's Sports Blog</title>
 <style>
@@ -174,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 1, 2025</p>
+        <p class="date">April 14, 2025</p>
       </div>
     </div>
     
@@ -193,16 +193,928 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>There are two main types of putters used on the PGA Tour. Mallets and blades.</p>
+<p>There are two main types of putters used on the PGA Tour. Mallets and blades. Mallets are largely seen as a more new age invention that use technology which simply didn’t exist during golf’s early days. However, blades have continued to evolve in their own way. Which brings up the debate: which putter type is superior? This question is difficult to answer for many reasons. First off, how do you determine what defines good putting? There are so many different stats when it comes to putting, from make rate to three putt avoidance and so much more. Also, how much does the player wielding the tool make a difference? This blog will use recent data from the top 50 golfers in the world to hopefully answer that question. So let’s start out very simple. Without yet considering performance or statistics, which putter is more a more popular pick for the pros on the PGA Tour?</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggalt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 methods overwritten by 'ggalt':
+  method                  from   
+  grid.draw.absoluteGrob  ggplot2
+  grobHeight.absoluteGrob ggplot2
+  grobWidth.absoluteGrob  ggplot2
+  grobX.absoluteGrob      ggplot2
+  grobY.absoluteGrob      ggplot2</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(waffle)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>putting <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/PGA_Putting.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 50 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): Player, PutterStyle
+dbl (6): OWGR, SG_Putting, Putting_Avg, Putts_Per_Round, One_Putt_Pct, Three...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>putting_averages <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/putting_averages.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 2 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): PutterStyle
+dbl (4): avg_SG, avg_one_putt_pct, avg_three_putt_pct, avg_putts_per_round
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>winners <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/2024_Winner_Putter_Breakdown.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 2 Columns: 2
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): PutterStyle
+dbl (1): Wins
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>putter_count <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Mallets"</span> <span class="ot">=</span> <span class="dv">39</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Blade"</span> <span class="ot">=</span> <span class="dv">11</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">waffle</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  putter_count,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">rows =</span> <span class="dv">3</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"1 square = 1 player who uses that putter"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mallets are the dominating pick for players in the top 50"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Over 3/4 of the players in the top 50 opt for the mallet style putter. Why?"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: PGA Tour | By Arden Louchheim"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_textbox_simple</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Clearly the mallets are a more popular pick than the blades. There must be a reason behind that… right? However, taking a closer look at the breakdown of which players in the top 50 use which putters is interesting.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>player_and_putters <span class="ot">&lt;-</span> putting <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Player, OWGR, PutterStyle)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>player_and_putters <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">20</span>,<span class="at">wt=</span><span class="sc">-</span>OWGR) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Player =</span> <span class="st">"Player"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">OWGR =</span> <span class="st">"Official World Golf Ranking"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">PutterStyle =</span> <span class="st">"Putter Style"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"While majority of the top 20 players play mallets, the top 10 players are a fairly even split."</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Notably, world number 1 Scottie Scheffler switched from a blade to a mallet during putting woes."</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">weight =</span> <span class="st">"bold"</span>, <span class="at">align =</span> <span class="st">"left"</span>),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_title</span>(<span class="st">"title"</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">align =</span> <span class="st">"left"</span>),</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_title</span>(<span class="st">"subtitle"</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">source_note =</span> <span class="fu">md</span>(<span class="st">"**By:** Arden Louchheim  |  **Source:** [PGATour](https://www.pgatour.com/stats/putting): PGA Tour Stats Database"</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>(<span class="at">columns =</span> <span class="fu">everything</span>()),</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_borders</span>(<span class="at">sides =</span> <span class="st">"bottom"</span>, <span class="at">weight =</span> <span class="fu">px</span>(<span class="dv">3</span>)),</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_row_striping</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_table_lines</span>(<span class="st">"none"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"black"</span>),</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"white"</span>)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">rows =</span> PutterStyle <span class="sc">==</span> <span class="st">"Mallet"</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"white"</span>),</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"black"</span>)</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">rows =</span> PutterStyle <span class="sc">==</span> <span class="st">"Blade"</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="qvbwwsjpsx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qvbwwsjpsx table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qvbwwsjpsx thead, #qvbwwsjpsx tbody, #qvbwwsjpsx tfoot, #qvbwwsjpsx tr, #qvbwwsjpsx td, #qvbwwsjpsx th {
+  border-style: none;
+}
+
+#qvbwwsjpsx p {
+  margin: 0;
+  padding: 0;
+}
+
+#qvbwwsjpsx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qvbwwsjpsx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qvbwwsjpsx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qvbwwsjpsx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qvbwwsjpsx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qvbwwsjpsx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qvbwwsjpsx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qvbwwsjpsx .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qvbwwsjpsx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qvbwwsjpsx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qvbwwsjpsx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qvbwwsjpsx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qvbwwsjpsx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qvbwwsjpsx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qvbwwsjpsx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qvbwwsjpsx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qvbwwsjpsx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qvbwwsjpsx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qvbwwsjpsx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qvbwwsjpsx .gt_first_summary_row {
+  border-top-style: none;
+  border-top-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qvbwwsjpsx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qvbwwsjpsx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: none;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qvbwwsjpsx .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qvbwwsjpsx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qvbwwsjpsx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qvbwwsjpsx .gt_left {
+  text-align: left;
+}
+
+#qvbwwsjpsx .gt_center {
+  text-align: center;
+}
+
+#qvbwwsjpsx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qvbwwsjpsx .gt_font_normal {
+  font-weight: normal;
+}
+
+#qvbwwsjpsx .gt_font_bold {
+  font-weight: bold;
+}
+
+#qvbwwsjpsx .gt_font_italic {
+  font-style: italic;
+}
+
+#qvbwwsjpsx .gt_super {
+  font-size: 65%;
+}
+
+#qvbwwsjpsx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qvbwwsjpsx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qvbwwsjpsx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qvbwwsjpsx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qvbwwsjpsx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qvbwwsjpsx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qvbwwsjpsx .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qvbwwsjpsx .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qvbwwsjpsx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="3" class="gt_heading gt_title gt_font_normal" style="text-align: left; color: #000000; font-weight: bold;">While majority of the top 20 players play mallets, the top 10 players are a fairly even split.</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="text-align: left; color: #000000;">Notably, world number 1 Scottie Scheffler switched from a blade to a mallet during putting woes.</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Player" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold" scope="col">Player</th>
+<th id="OWGR" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold" scope="col">Official World Golf Ranking</th>
+<th id="PutterStyle" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold" scope="col">Putter Style</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Scottie Scheffler</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">1</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #000000; color: #FFFFFF">Rory Mcilroy</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #000000; color: #FFFFFF">2</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Xander Schauffle</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">3</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #FFFFFF; color: #000000">Collin Morikawa</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #FFFFFF; color: #000000">4</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #FFFFFF; color: #000000">Blade</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #FFFFFF; color: #000000">Ludvig Aberg</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #FFFFFF; color: #000000">5</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #FFFFFF; color: #000000">Blade</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #FFFFFF; color: #000000">Hideki Matsuyama</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #FFFFFF; color: #000000">6</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #FFFFFF; color: #000000">Blade</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Russell Henley</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">7</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #000000; color: #FFFFFF">Viktor Hovland</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #000000; color: #FFFFFF">8</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Justin Thomas</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">9</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #FFFFFF; color: #000000">Tommy Fleetwood</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #FFFFFF; color: #000000">10</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #FFFFFF; color: #000000">Blade</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Wyndham Clark</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">11</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #000000; color: #FFFFFF">Shane Lowry</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #000000; color: #FFFFFF">12</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Sepp Straka</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">13</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #000000; color: #FFFFFF">Keegan Bradley</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #000000; color: #FFFFFF">14</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Patrick Cantlay</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">15</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #000000; color: #FFFFFF">Maverick McNealy</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #000000; color: #FFFFFF">16</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Robert MacIntyre</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">18</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #000000; color: #FFFFFF">Billy Horschel</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #000000; color: #FFFFFF">20</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Player" style="background-color: #000000; color: #FFFFFF">Akshay Bhatia</td>
+<td class="gt_row gt_right" headers="OWGR" style="background-color: #000000; color: #FFFFFF">21</td>
+<td class="gt_row gt_left" headers="PutterStyle" style="background-color: #000000; color: #FFFFFF">Mallet</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="Player" style="background-color: #FFFFFF; color: #000000">Sahith Theegala</td>
+<td class="gt_row gt_right gt_striped" headers="OWGR" style="background-color: #FFFFFF; color: #000000">22</td>
+<td class="gt_row gt_left gt_striped" headers="PutterStyle" style="background-color: #FFFFFF; color: #000000">Blade</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="3" class="gt_sourcenote"><strong>By:</strong> Arden Louchheim | <strong>Source:</strong> <a href="https://www.pgatour.com/stats/putting">PGATour</a>: PGA Tour Stats Database</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+<p>While the top 50 is dominated by mallets, the top 10 sees a more even distribution. It is clear there is a more popular pick in the blades vs.&nbsp;mallets debate. Scottie Scheffler, the number one player in the world who is coming off one of the most dominant seasons in recent history with nine wins including the coveted green jacket, swears by his Taylormade Spider mallet putter. However rising stars like Sweden’s Ludvig Aberg trust in their more classic blade. Only the numbers can truly tell the story of which type is better. First let’s look at the strokes gained putting stat. Strokes gained is the most all encompassing putting stat as it compares a player’s putting performance relative to the rest of the field. If the number is positive, that player is gaining strokes on the field. If it is negative, they are losing strokes. Alongside this strokes gained comparison is the breakdown of which type of putter amassed more wins in the 2024 season, because let’s be honest, winning is what every player is going out there to do.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vis_fig_sgAVG <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> putting_averages,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> PutterStyle,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">weight =</span> avg_SG,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> PutterStyle</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Putter Style"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average Strokes Gained"</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"In the most comprehensive putting stat, </span><span class="sc">\n</span><span class="st">strokes gained, mallet putters outperform </span><span class="sc">\n</span><span class="st">the blades"</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"This stat combines many of the others we have looked at </span><span class="sc">\n</span><span class="st">inlcuding, three putt avoidance and one putt percentage."</span>,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: PGA Tour | By: Arden Louchheim"</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">name =</span> <span class="st">"Putter Style"</span>) <span class="sc">+</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  )  </span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>vis_fig_winners <span class="ot">&lt;-</span> </span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> winners,</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> PutterStyle,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">weight =</span> Wins,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> PutterStyle</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">+</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Putter Style"</span>,</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Wins"</span>,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mallets were also used more often than </span><span class="sc">\n</span><span class="st">blades for winners on the PGA Tour </span><span class="sc">\n</span><span class="st">last season"</span>,</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Was the putter the reason why?"</span>,</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: Golf Digest | By: Arden Louchheim"</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">name =</span> <span class="st">"Putter Style"</span>) <span class="sc">+</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>vis_fig_sgAVG <span class="sc">+</span> vis_fig_winners</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"image.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving 7 x 5 in image</code></pre>
+</div>
+</div>
+<p>So far, mallets are in the lead. It makes sense that if the mallets are superior in strokes gained putting, meaning that the players using mallets on average gain more strokes on the field than the players using blades, would also then go on to win more tournaments. Think about any golf tournament. While yes, every shot counts as one, the ones you remember are often long putts hold to force a playoff or win the tournament. The truth is that tournaments are often won and lost on the putting green. But what does the comparison look like if we examine the stats more individually? Instead of just looking at strokes gained, which combines all of the statistics, let’s examine three important statistics individually. One putt percentage, three putt percentage, and total putts per round. Golfers want their one putt percentage to be high, their three putt percentage to be low, and their putts per round to be low.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mallets <span class="ot">&lt;-</span> putting <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PutterStyle <span class="sc">==</span> <span class="st">"Mallet"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>blades <span class="ot">&lt;-</span> putting <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PutterStyle <span class="sc">==</span> <span class="st">"Blade"</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>putting <span class="sc">|&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_one_putt =</span> <span class="fu">mean</span>(One_Putt_Pct),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_three_avoid =</span> <span class="fu">mean</span>(Three_Putt_Avoid)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code># A tibble: 1 × 2
+  avg_one_putt avg_three_avoid
+         &lt;dbl&gt;           &lt;dbl&gt;
+1         40.9            2.63</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>best_mallet <span class="ot">&lt;-</span> mallets <span class="sc">|&gt;</span> <span class="fu">slice_min</span>(Putts_Per_Round, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mallets,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> One_Putt_Pct, <span class="at">y =</span> Three_Putt_Avoid, <span class="at">size =</span> Putts_Per_Round),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> .<span class="dv">3</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> blades,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> One_Putt_Pct, <span class="at">y =</span> Three_Putt_Avoid, <span class="at">size =</span> Putts_Per_Round),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> .<span class="dv">3</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">40.8554</span>, <span class="at">color=</span><span class="st">"#3b3b3b"</span>) <span class="sc">+</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">2.6282</span>, <span class="at">color=</span><span class="st">"#3b3b3b"</span>) <span class="sc">+</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">40.8554</span> <span class="sc">+</span> <span class="fl">0.1</span>, <span class="at">y =</span> <span class="fu">max</span>(putting<span class="sc">$</span>Three_Putt_Avoid), </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"Average One-Putt Percentage"</span>, </span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#3b3b3b"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">min</span>(putting<span class="sc">$</span>One_Putt_Pct), <span class="at">y =</span> <span class="fl">2.6282</span> <span class="sc">+</span> <span class="fl">0.1</span>, </span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"Average 3-Putt Percentage"</span>, </span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#3b3b3b"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">"Putts_Per_Round"</span>) <span class="sc">+</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">38</span>, <span class="at">y =</span> <span class="fl">4.5</span>, <span class="at">label =</span> <span class="st">"More Three Putts, Fewer One Putts"</span>),</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"purple"</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">45</span>, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">label =</span> <span class="st">"Fewer Three Putts, More One Putts"</span>),</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"purple"</span>,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_encircle</span>(</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> best_mallet,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> One_Putt_Pct, <span class="at">y =</span> Three_Putt_Avoid),</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">s_shape =</span> <span class="fl">0.01</span>,</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">expand =</span> <span class="fl">0.0000000001</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> best_mallet,</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> One_Putt_Pct, <span class="at">y =</span> Three_Putt_Avoid, <span class="at">label =</span> <span class="st">"Sunjae Im"</span>),  </span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">nudge_y =</span> <span class="fl">0.3</span>,</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">segment.color =</span> <span class="st">"blue"</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"One Putt Percentage"</span>,</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Three Putt Percentage"</span>,</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mallets are superior for fewer three putts, however blades have </span><span class="sc">\n</span><span class="st">the leg up in more one putts and fewer putts per round"</span>,</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Mallets are the &lt;span style = 'color:blue;'&gt;blue&lt;/span&gt; circles, and blades are the &lt;span style = 'color:red;'&gt;red&lt;/span&gt; circles. Mallet user Sunjae Im presents one of the best performances in all three statistical categories."</span>,</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: PGA Tour | By Arden Louchheim"</span>,</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name =</span> <span class="st">"Putts Per Round"</span>) <span class="sc">+</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_textbox_simple</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Scale for size is already present.
+Adding another scale for size, which will replace the existing scale.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>The bottom right quadrant is where you want to be. Fewer three putts and more one putts is a recipe for success on the putting greens. The blue dots are much more prevalent in that bottom right quadrant, adding even more support for the mallet putter’s case. Sunjae Im has the best putts per round average of anyone in the top 50, and that is largely due to his optimal combination of a lot of one putts and limited three putts. And, oh yeah, he plays a mallet.</p>
+<p>Overall, mallets seem to be the superior putter type on the PGA Tour. They have produced more wins in the last year, and they consistently lead blades in many statistical categories. However, like in many sports with different equipment, the true decider of how well someone will putt is the person swinging the club. Certain putting strokes may work better with certain styles, and it is up to each pro to decide which club is right for them. But if you came to this blog torn on whether to buy that brand new mallet or brand new blade to take your golf game to the next level, I’d recommend the mallet… and to go practice your putting, regardless of the club you chose.</p>
 
 
 
